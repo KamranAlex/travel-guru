@@ -1,21 +1,29 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import fakeData from "../FakeData/Fakedata";
+import Header from "../Header/Header";
 import "./Booking.css";
 
 const Booking = () => {
+  const { id } = useParams();
+
+  const passedInfo = fakeData.filter((flInfo) => {
+    return flInfo.id === parseInt(id);
+  });
+
   return (
-    <div className='container'>
-      <div className='row'>
+    <div className='container-fluid home'>
+      <Header></Header>
+      <div className='container places'>
         <div className='col-md-6'>
-          <div className='info'>
-            <h1>CoxBazar</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia
-              quo ipsa earum numquam harum obcaecati, odio eveniet vitae
-              explicabo asperiores voluptas iure dolore illum molestias debitis,
-              deleniti, aut in est.
-            </p>
-          </div>
+          {passedInfo.map((psInfo) => {
+            return (
+              <div className='info'>
+                <h1>{psInfo.name}</h1>
+                <p>{psInfo.desc}</p>
+              </div>
+            );
+          })}
         </div>
         <div className='col-md-6'>
           <div className='booking-form'>

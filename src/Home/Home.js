@@ -8,8 +8,7 @@ const Home = () => {
   return (
     <div className='home container-fluid'>
       <Header></Header>
-      {/* <Places></Places> */}
-      <Booking></Booking>
+      <Places></Places>
     </div>
   );
 };
