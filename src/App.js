@@ -4,6 +4,8 @@ import "./App.css";
 import Booking from "./Booking/Booking";
 import Error from "./Error/Error";
 import Home from "./Home/Home";
+import Login from "./Login/Login";
+import SignUp from "./Login/SignUp";
 
 function App() {
   return (
@@ -20,6 +22,14 @@ function App() {
 
           <Route path='/booking/:id'>
             <Booking></Booking>
+          </Route>
+
+          <Route path='/login'>
+            <Login></Login>
+          </Route>
+
+          <Route path='/signUp'>
+            <SignUp></SignUp>
           </Route>
 
           <Route path='*'>

@@ -1,3 +1,5 @@
+import { faBook, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import fakeData from "../FakeData/Fakedata";
@@ -14,71 +16,73 @@ const Booking = () => {
   return (
     <div className='container-fluid home'>
       <Header></Header>
-      <div className='container places'>
-        <div className='col-md-6'>
-          {passedInfo.map((psInfo) => {
-            return (
+      {passedInfo.map((psInfo) => {
+        return (
+          <div className='container places'>
+            <div className='col-md-6'>
               <div className='info'>
                 <h1>{psInfo.name}</h1>
                 <p>{psInfo.desc}</p>
               </div>
-            );
-          })}
-        </div>
-        <div className='col-md-6'>
-          <div className='booking-form'>
-            <form action=''>
-              <div className='form-group'>
-                <label for='exampleInputEmail1'>Origin</label>
-                <input
-                  className='form-control'
-                  type='text'
-                  name='origin'
-                  id=''
-                />
-              </div>
-              <div className='form-group'>
-                <label for='exampleInputEmail1'>Destination</label>
-                <input
-                  className='form-control'
-                  type='text'
-                  name='Destination'
-                  id=''
-                />
-              </div>
-              <div className='row'>
-                <div className='col-md-6'>
+            </div>
+            <div className='col-md-6'>
+              <div className='booking-form'>
+                <form action=''>
                   <div className='form-group'>
-                    <label for='exampleInputEmail1'>From</label>
+                    <label for='Origin'>Origin</label>
                     <input
                       className='form-control'
-                      type='date'
-                      name='Destination'
+                      type='text'
+                      name='origin'
                       id=''
                     />
                   </div>
-                </div>
-                <div className='col-md-6'>
                   <div className='form-group'>
-                    <label for='exampleInputEmail1'>To</label>
+                    <label for='Destination'>Destination</label>
                     <input
                       className='form-control'
-                      type='date'
+                      type='text'
                       name='Destination'
                       id=''
+                      value={psInfo.name}
                     />
                   </div>
-                </div>
+                  <div className='row'>
+                    <div className='col-md-6'>
+                      <div className='form-group'>
+                        <label for='fromDate'>From</label>
+                        <input
+                          className='form-control'
+                          type='date'
+                          name='fromDate'
+                          id=''
+                        />
+                      </div>
+                    </div>
+                    <div className='col-md-6'>
+                      <div className='form-group'>
+                        <label for='toDate'>To</label>
+                        <input
+                          className='form-control'
+                          type='date'
+                          name='ToDate'
+                          id=''
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <Link to='/login'>
+                    <button type='submit' className='booking-button'>
+                      Book Now&#160;&#160;&#160;
+                      <FontAwesomeIcon icon={faCalendarCheck} />
+                    </button>
+                  </Link>
+                </form>
               </div>
-              <Link to='/booking'>
-                <button type='submit' className='bookingBtn'>
-                  Start Booking
-                </button>
-              </Link>
-            </form>
+            </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 };

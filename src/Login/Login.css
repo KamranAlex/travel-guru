@@ -1,0 +1,45 @@
+.login {
+  display: flex;
+  justify-content: center;
+}
+.separator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.login-form {
+  border: 1px solid lightgrey;
+  padding: 20px 20px;
+  width: 50%;
+}
+h6 {
+  width: 50%;
+  text-align: center;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  line-height: 1.1em !important;
+  margin: 20px 0 20px;
+}
+h6 span {
+  background: #fff;
+  padding: 0 15px;
+}
+.social-icon {
+  padding-left: 20px;
+}
+.social-text {
+  padding-right: 30px;
+}
+.social-text p {
+  font-weight: bold;
+}
+
+.fb-login {
+  border: 1px solid gray;
+  border-radius: 20px;
+  width: 30%;
+  margin: 20px auto;
+  padding: 10px 10px 2px 5px;
+}

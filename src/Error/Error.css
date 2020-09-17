@@ -1,0 +1,13 @@
+.error {
+  display: flex;
+  justify-content: center;
+  margin: 150px;
+}
+.error-code {
+  font-size: 60px;
+  font-weight: 700;
+}
+.error-text {
+  font-size: 20px;
+  font-weight: 600;
+}
