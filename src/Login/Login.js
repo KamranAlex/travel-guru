@@ -35,16 +35,54 @@ const Login = () => {
         const errorMessage = error.message;
       });
   };
+  const handleBlur = (e) => {
+    let isFieldValid = true;
+    if (e.target.name === "email") {
+      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
+    }
+    if (e.target.name === "password") {
+      const isPasswordValid = e.target.value.length > 6;
+      const passwordHasNumber = /\d{1}/.test(e.target.value);
+      isFieldValid = isPasswordValid && passwordHasNumber;
+    }
+    if (isFieldValid) {
+      const newUserInfo = { ...loggedInUser };
+      newUserInfo[e.target.name] = e.target.value;
+      setLoggedInUser(newUserInfo);
+    }
+  };
+  const handleFormLogin = (e) => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
+      .then((res) => {
+        const newUserInfo = { ...loggedInUser };
+        newUserInfo.error = "";
+        newUserInfo.success = true;
+        setLoggedInUser(newUserInfo);
+        history.replace(from);
+      })
+      .catch((error) => {
+        const newUserInfo = { ...loggedInUser };
+        newUserInfo.error = error.message;
+        newUserInfo.success = false;
+        setLoggedInUser(newUserInfo);
+        console.log(error.message);
+      });
+
+    e.preventDefault();
+  };
   return (
     <div>
       <HeaderDark></HeaderDark>
       <div className='container login'>
         <div className='login-form'>
           <h3 className='text-center'>Login</h3>
-          <form action=''>
+          <form action='' onSubmit={handleFormLogin}>
             <div className='form-group'>
               <label for='Email'>Email</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='email'
                 name='email'
@@ -55,6 +93,7 @@ const Login = () => {
             <div className='form-group'>
               <label for='Password'>Password</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='password'
                 name='password'
@@ -62,7 +101,7 @@ const Login = () => {
               />
             </div>
             <button type='submit' className='booking-button'>
-              Login
+              Log in
             </button>
           </form>
           <div className='toggle-login'>

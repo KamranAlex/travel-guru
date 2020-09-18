@@ -1,7 +1,7 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../App";
 import HeaderDark from "../Header/HeaderDark";
 import * as firebase from "firebase/app";
@@ -10,6 +10,10 @@ import firebaseConfig from "./firebase.config";
 
 const SignUp = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const history = useHistory();
+  const location = useLocation();
+
+  const { from } = location.state || { from: { pathname: "/" } };
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -30,6 +34,7 @@ const SignUp = () => {
       setLoggedInUser(newUserInfo);
     }
   };
+
   const handleSubmit = (e) => {
     if (loggedInUser.email && loggedInUser.password) {
       firebase
@@ -43,6 +48,8 @@ const SignUp = () => {
           newUserInfo.error = "";
           newUserInfo.success = true;
           setLoggedInUser(newUserInfo);
+          updateUserName(loggedInUser.name);
+          history.replace(from);
         })
         .catch((error) => {
           const newUserInfo = { ...loggedInUser };
@@ -52,25 +59,22 @@ const SignUp = () => {
           console.log(error.message);
         });
     }
-    // if (!newUser && user.email && user.password) {
-    //   firebase
-    //     .auth()
-    //     .signInWithEmailAndPassword(user.email, user.password)
-    //     .then((res) => {
-    //       const newUserInfo = { ...user };
-    //       newUserInfo.error = "";
-    //       newUserInfo.success = true;
-    //       setUser(newUserInfo);
-    //       console.log(res);
-    //     })
-    //     .catch((error) => {
-    //       const newUserInfo = { ...user };
-    //       newUserInfo.error = error.message;
-    //       newUserInfo.success = false;
-    //       setUser(newUserInfo);
-    //     });
-    // }
     e.preventDefault();
+  };
+  const updateUserName = (name) => {
+    const user = firebase.auth().currentUser;
+
+    user
+      .updateProfile({
+        displayName: name,
+        photoURL: "https://example.com/jane-q-user/profile.jpg",
+      })
+      .then(() => {
+        console.log("Name Updated");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
