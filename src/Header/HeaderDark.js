@@ -40,18 +40,13 @@ const HeaderDark = () => {
               Contact
             </Link>
             {loggedInUser.email ? (
-              <div>
-                <button
-                  onClick={() => setLoggedInUser({})}
-                  className='login-btn'
-                  style={{ background: "#00b82b" }}
-                >
-                  Logout
-                </button>
-                {/* <p style={{ color: "#f9a51a", marginTop: "2px" }}>
-                  {loggedInUser.name}
-                </p> */}
-              </div>
+              <button
+                onClick={() => setLoggedInUser({})}
+                className='login-btn'
+                style={{ background: "#00b82b" }}
+              >
+                Logout
+              </button>
             ) : (
               <Link to='/login'>
                 <button className='login-btn'>Login</button>

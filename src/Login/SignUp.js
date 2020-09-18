@@ -1,6 +1,6 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { UserContext } from "../App";
 import HeaderDark from "../Header/HeaderDark";
@@ -10,6 +10,14 @@ import firebaseConfig from "./firebase.config";
 
 const SignUp = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [newUser, setNewUser] = useState({
+    isSignedIn: false,
+    name: "",
+    email: "",
+    password: "",
+    error: "",
+    success: false,
+  });
   const history = useHistory();
   const location = useLocation();
 
@@ -28,53 +36,38 @@ const SignUp = () => {
       const passwordHasNumber = /\d{1}/.test(e.target.value);
       isFieldValid = isPasswordValid && passwordHasNumber;
     }
+    if (e.target.name === "confirm-password") {
+      const isPasswordValid = e.target.value.length > 6;
+      const passwordHasNumber = /\d{1}/.test(e.target.value);
+      isFieldValid = isPasswordValid && passwordHasNumber;
+    }
     if (isFieldValid) {
-      const newUserInfo = { ...loggedInUser };
+      const newUserInfo = { ...newUser };
       newUserInfo[e.target.name] = e.target.value;
-      setLoggedInUser(newUserInfo);
+      setNewUser(newUserInfo);
     }
   };
 
   const handleSubmit = (e) => {
-    if (loggedInUser.email && loggedInUser.password) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(
-          loggedInUser.email,
-          loggedInUser.password
-        )
-        .then((res) => {
-          const newUserInfo = { ...loggedInUser };
-          newUserInfo.error = "";
-          newUserInfo.success = true;
-          setLoggedInUser(newUserInfo);
-          updateUserName(loggedInUser.name);
-          history.replace(from);
-        })
-        .catch((error) => {
-          const newUserInfo = { ...loggedInUser };
-          newUserInfo.error = error.message;
-          newUserInfo.success = false;
-          setLoggedInUser(newUserInfo);
-          console.log(error.message);
-        });
-    }
-    e.preventDefault();
-  };
-  const updateUserName = (name) => {
-    const user = firebase.auth().currentUser;
-
-    user
-      .updateProfile({
-        displayName: name,
-        photoURL: "https://example.com/jane-q-user/profile.jpg",
-      })
-      .then(() => {
-        console.log("Name Updated");
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
+      .then((res) => {
+        const newUserInfo = { ...newUser };
+        newUserInfo.error = "";
+        newUserInfo.success = true;
+        setLoggedInUser(newUserInfo);
+        history.replace(from);
       })
       .catch((error) => {
-        console.log(error);
+        const newUserInfo = { ...newUser };
+        newUserInfo.error = error.message;
+        newUserInfo.success = false;
+        setLoggedInUser(newUserInfo);
+        console.log(error.message);
       });
+
+    e.preventDefault();
   };
 
   return (
@@ -85,23 +78,12 @@ const SignUp = () => {
           <h3 className='text-center'>Create Account</h3>
           <form action='' onSubmit={handleSubmit}>
             <div className='form-group'>
-              <label for='FirstName'>First Name</label>
+              <label for='name'>Name</label>
               <input
                 onBlur={handleBlur}
                 className='form-control'
                 type='text'
-                name='firtsName'
-                id=''
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label for='LastName'>Last Name</label>
-              <input
-                onBlur={handleBlur}
-                className='form-control'
-                type='text'
-                name='LastName'
+                name='name'
                 id=''
                 required
               />
@@ -133,11 +115,18 @@ const SignUp = () => {
                 onBlur={handleBlur}
                 className='form-control'
                 type='password'
-                name='password'
+                name='confirm-password'
                 required
               />
             </div>
-
+            <small
+              style={{
+                color: "red",
+                fontWeight: "600",
+              }}
+            >
+              {loggedInUser.error}
+            </small>
             <button type='submit' className='booking-button'>
               Create Account
             </button>

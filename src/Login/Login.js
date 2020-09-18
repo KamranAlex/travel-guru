@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import "./Login.css";
 import HeaderDark from "../Header/HeaderDark";
@@ -11,6 +11,7 @@ import { UserContext } from "../App";
 
 const Login = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [user, setUser] = useState({});
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
@@ -46,29 +47,32 @@ const Login = () => {
       isFieldValid = isPasswordValid && passwordHasNumber;
     }
     if (isFieldValid) {
-      const newUserInfo = { ...loggedInUser };
+      const newUserInfo = { ...user };
       newUserInfo[e.target.name] = e.target.value;
-      setLoggedInUser(newUserInfo);
+      setUser(newUserInfo);
     }
   };
   const handleFormLogin = (e) => {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(loggedInUser.email, loggedInUser.password)
-      .then((res) => {
-        const newUserInfo = { ...loggedInUser };
-        newUserInfo.error = "";
-        newUserInfo.success = true;
-        setLoggedInUser(newUserInfo);
-        history.replace(from);
-      })
-      .catch((error) => {
-        const newUserInfo = { ...loggedInUser };
-        newUserInfo.error = error.message;
-        newUserInfo.success = false;
-        setLoggedInUser(newUserInfo);
-        console.log(error.message);
-      });
+    if (user.email && user.password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          const newUserInfo = { ...user };
+          newUserInfo.error = "";
+          newUserInfo.success = true;
+          setLoggedInUser(newUserInfo);
+          history.replace(from);
+        })
+        .catch((error) => {
+          const newUserInfo = { ...user };
+          error.message = "Credentials Doesn't Match..!";
+          newUserInfo.error = error.message;
+          newUserInfo.success = false;
+          setLoggedInUser(newUserInfo);
+          console.log(newUserInfo.error);
+        });
+    }
 
     e.preventDefault();
   };
@@ -100,10 +104,19 @@ const Login = () => {
                 required
               />
             </div>
+            <small
+              style={{
+                color: "red",
+                fontWeight: "600",
+              }}
+            >
+              {loggedInUser.error}
+            </small>
             <button type='submit' className='booking-button'>
               Log in
             </button>
           </form>
+
           <div className='toggle-login'>
             <small>
               Don't have an account?
