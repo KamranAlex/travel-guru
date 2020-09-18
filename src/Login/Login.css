@@ -2,12 +2,21 @@
   display: flex;
   justify-content: center;
 }
+form button {
+  display: block;
+  width: 100%;
+}
+
 .separator {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 15px;
   margin-bottom: 15px;
+}
+.toggle-login {
+  text-align: center;
+  margin-top: 5px;
 }
 .login-form {
   border: 1px solid lightgrey;
@@ -26,6 +35,7 @@ h6 span {
   background: #fff;
   padding: 0 15px;
 }
+
 .social-icon {
   padding-left: 20px;
 }
@@ -34,12 +44,22 @@ h6 span {
 }
 .social-text p {
   font-weight: bold;
+  margin-bottom: 0;
 }
 
+.google-login,
 .fb-login {
   border: 1px solid gray;
   border-radius: 20px;
   width: 30%;
   margin: 20px auto;
-  padding: 10px 10px 2px 5px;
+  padding: 10px 10px 10px 10px;
+}
+.google-login:focus {
+  outline: none;
+  box-shadow: 0 0 3pt 2pt #dc3545;
+}
+.fb-login:focus {
+  outline: none;
+  box-shadow: 0 0 3pt 2pt #3b5998;
 }

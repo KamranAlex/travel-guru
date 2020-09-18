@@ -1,11 +1,40 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fab, faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import React from "react";
-import { Link } from "react-router-dom";
-import HeaderDark from "../Header/HeaderDark";
+import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import React, { useContext } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import "./Login.css";
+import HeaderDark from "../Header/HeaderDark";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import firebaseConfig from "./firebase.config";
+import { UserContext } from "../App";
 
 const Login = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
+
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  const handleGoogleSignIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((result) => {
+        const { displayName, email } = result.user;
+        const signedInUser = { name: displayName, email };
+        setLoggedInUser(signedInUser);
+        history.replace(from);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
   return (
     <div>
       <HeaderDark></HeaderDark>
@@ -15,18 +44,26 @@ const Login = () => {
           <form action=''>
             <div className='form-group'>
               <label for='Email'>Email</label>
-              <input className='form-control' type='email' name='email' id='' />
+              <input
+                className='form-control'
+                type='email'
+                name='email'
+                id=''
+                required
+              />
             </div>
             <div className='form-group'>
               <label for='Password'>Password</label>
-              <input className='form-control' type='password' name='password' />
+              <input
+                className='form-control'
+                type='password'
+                name='password'
+                required
+              />
             </div>
-
-            <Link to='/login'>
-              <button type='submit' className='booking-button'>
-                Login
-              </button>
-            </Link>
+            <button type='submit' className='booking-button'>
+              Login
+            </button>
           </form>
           <div className='toggle-login'>
             <small>
@@ -38,13 +75,16 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className='text-center container'>
+      <div className='text-center container footerBtn'>
         <div className='container separator'>
           <h6>
             <span>or</span>
           </h6>
         </div>
-        <div className='fb-login d-flex justify-content-between '>
+        <button
+          onClick={handleGoogleSignIn}
+          className='google-login d-flex justify-content-between '
+        >
           <div className='social-icon '>
             <FontAwesomeIcon
               size='lg'
@@ -55,8 +95,8 @@ const Login = () => {
           <div className='social-text '>
             <p> Continue With Google</p>
           </div>
-        </div>
-        <div className='fb-login d-flex justify-content-between '>
+        </button>
+        <button className='fb-login d-flex justify-content-between '>
           <div className='social-icon '>
             <FontAwesomeIcon
               size='lg'
@@ -67,7 +107,7 @@ const Login = () => {
           <div className='social-text '>
             <p> Continue With Facebook</p>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   );

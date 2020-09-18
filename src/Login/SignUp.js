@@ -1,4 +1,8 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import {
+  faCheckCircle,
+  faExclamationTriangle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +23,7 @@ const SignUp = () => {
                 type='text'
                 name='firtsName'
                 id=''
+                required
               />
             </div>
             <div className='form-group'>
@@ -28,12 +33,19 @@ const SignUp = () => {
                 type='text'
                 name='LastName'
                 id=''
+                required
               />
             </div>
 
             <div className='form-group'>
               <label for='Email'>Email</label>
-              <input className='form-control' type='email' name='email' id='' />
+              <input
+                className='form-control'
+                type='email'
+                name='email'
+                id=''
+                required
+              />
             </div>
             <div className='form-group'>
               <label for='Password'>Password</label>
@@ -41,18 +53,22 @@ const SignUp = () => {
                 className='form-control'
                 type='password'
                 name='confirmPassword'
+                required
               />
             </div>
             <div className='form-group'>
               <label for='ConfirmPassword'>Confirm Password</label>
-              <input className='form-control' type='password' name='password' />
+              <input
+                className='form-control'
+                type='password'
+                name='password'
+                required
+              />
             </div>
 
-            <Link to='/login'>
-              <button type='submit' className='booking-button'>
-                Create Account
-              </button>
-            </Link>
+            <button type='submit' className='booking-button'>
+              Create Account
+            </button>
           </form>
           <div className='toggle-login'>
             <small>
@@ -64,13 +80,13 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-      <div className='text-center container'>
+      <div className='text-center container footerBtn'>
         <div className='container separator'>
           <h6>
             <span>or</span>
           </h6>
         </div>
-        <div className='fb-login d-flex justify-content-between '>
+        <button className='google-login d-flex justify-content-between '>
           <div className='social-icon '>
             <FontAwesomeIcon
               size='lg'
@@ -81,8 +97,8 @@ const SignUp = () => {
           <div className='social-text '>
             <p> Continue With Google</p>
           </div>
-        </div>
-        <div className='fb-login d-flex justify-content-between '>
+        </button>
+        <button className='fb-login d-flex justify-content-between '>
           <div className='social-icon '>
             <FontAwesomeIcon
               size='lg'
@@ -93,7 +109,7 @@ const SignUp = () => {
           <div className='social-text '>
             <p> Continue With Facebook</p>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   );

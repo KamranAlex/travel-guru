@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../images/Logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./Header.css";
+import { Link } from "react-router-dom";
+import { UserContext } from "../App";
 
 const Header = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
   return (
     <div className='container '>
       <nav className=' header navbar navbar-expand-lg navbar-light '>
-        <a className='navbar-brand' href='/'>
+        <Link className='navbar-brand' to='/'>
           <img src={logo} alt='' className='logo' />
-        </a>
+        </Link>
 
         <form action='' className='search-box'>
           <FontAwesomeIcon icon={faSearch} className='search-icon' />
@@ -24,19 +27,36 @@ const Header = () => {
 
         <div className='collapse navbar-collapse ' id='navbarNavAltMarkup'>
           <div className='navbar-nav ml-auto '>
-            <a className='nav-link active' href='#'>
-              News <span className='sr-only'>(current)</span>
-            </a>
-            <a className='nav-link' href='#'>
+            <Link to='/home' className='nav-link active'>
+              Home <span className='sr-only'>(current)</span>
+            </Link>
+            <Link className='nav-link' to='/'>
               Blog
-            </a>
-            <a className='nav-link' href='#'>
+            </Link>
+            <Link className='nav-link' to='/'>
               Destination
-            </a>
-            <a className='nav-link ' href='#'>
+            </Link>
+            <Link className='nav-link ' to='/'>
               Contact
-            </a>
-            <button className='login-btn'>Login</button>
+            </Link>
+            {loggedInUser.email ? (
+              <div>
+                <button
+                  onClick={() => setLoggedInUser({})}
+                  className='login-btn'
+                  style={{ background: "#00b82b" }}
+                >
+                  Logout
+                </button>
+                <p style={{ color: "#f9a51a", marginTop: "2px" }}>
+                  {loggedInUser.name}
+                </p>
+              </div>
+            ) : (
+              <Link to='/login'>
+                <button className='login-btn'>Login</button>
+              </Link>
+            )}
           </div>
         </div>
       </nav>
