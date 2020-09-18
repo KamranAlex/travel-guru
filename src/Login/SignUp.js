@@ -1,24 +1,89 @@
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import {
-  faCheckCircle,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../App";
 import HeaderDark from "../Header/HeaderDark";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import firebaseConfig from "./firebase.config";
 
 const SignUp = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  const handleBlur = (e) => {
+    let isFieldValid = true;
+    if (e.target.name === "email") {
+      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
+    }
+    if (e.target.name === "password") {
+      const isPasswordValid = e.target.value.length > 6;
+      const passwordHasNumber = /\d{1}/.test(e.target.value);
+      isFieldValid = isPasswordValid && passwordHasNumber;
+    }
+    if (isFieldValid) {
+      const newUserInfo = { ...loggedInUser };
+      newUserInfo[e.target.name] = e.target.value;
+      setLoggedInUser(newUserInfo);
+    }
+  };
+  const handleSubmit = (e) => {
+    if (loggedInUser.email && loggedInUser.password) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          loggedInUser.email,
+          loggedInUser.password
+        )
+        .then((res) => {
+          const newUserInfo = { ...loggedInUser };
+          newUserInfo.error = "";
+          newUserInfo.success = true;
+          setLoggedInUser(newUserInfo);
+        })
+        .catch((error) => {
+          const newUserInfo = { ...loggedInUser };
+          newUserInfo.error = error.message;
+          newUserInfo.success = false;
+          setLoggedInUser(newUserInfo);
+          console.log(error.message);
+        });
+    }
+    // if (!newUser && user.email && user.password) {
+    //   firebase
+    //     .auth()
+    //     .signInWithEmailAndPassword(user.email, user.password)
+    //     .then((res) => {
+    //       const newUserInfo = { ...user };
+    //       newUserInfo.error = "";
+    //       newUserInfo.success = true;
+    //       setUser(newUserInfo);
+    //       console.log(res);
+    //     })
+    //     .catch((error) => {
+    //       const newUserInfo = { ...user };
+    //       newUserInfo.error = error.message;
+    //       newUserInfo.success = false;
+    //       setUser(newUserInfo);
+    //     });
+    // }
+    e.preventDefault();
+  };
+
   return (
     <div>
       <HeaderDark></HeaderDark>
       <div className='container login'>
         <div className='login-form'>
           <h3 className='text-center'>Create Account</h3>
-          <form action=''>
+          <form action='' onSubmit={handleSubmit}>
             <div className='form-group'>
               <label for='FirstName'>First Name</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='text'
                 name='firtsName'
@@ -29,6 +94,7 @@ const SignUp = () => {
             <div className='form-group'>
               <label for='LastName'>Last Name</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='text'
                 name='LastName'
@@ -36,10 +102,10 @@ const SignUp = () => {
                 required
               />
             </div>
-
             <div className='form-group'>
               <label for='Email'>Email</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='email'
                 name='email'
@@ -50,6 +116,7 @@ const SignUp = () => {
             <div className='form-group'>
               <label for='Password'>Password</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='password'
                 name='confirmPassword'
@@ -59,6 +126,7 @@ const SignUp = () => {
             <div className='form-group'>
               <label for='ConfirmPassword'>Confirm Password</label>
               <input
+                onBlur={handleBlur}
                 className='form-control'
                 type='password'
                 name='password'

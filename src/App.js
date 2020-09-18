@@ -12,7 +12,14 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 export const UserContext = createContext();
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [loggedInUser, setLoggedInUser] = useState({
+    isSignedIn: false,
+    name: "",
+    email: "",
+    password: "",
+    error: "",
+    success: false,
+  });
 
   return (
     <div className='App'>
