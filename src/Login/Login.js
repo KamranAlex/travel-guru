@@ -12,7 +12,12 @@ import { UserContext } from "../App";
 const Login = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
   const [newUser, setNewUser] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    isSignedIn: false,
+    name: "",
+    email: "",
+    password: "",
+  });
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
@@ -54,7 +59,27 @@ const Login = () => {
     }
   };
   const handleFormLogin = (e) => {
-    if (newUser && user.email && user.password) {
+    if (!newUser && user.email && user.password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          const newUserInfo = { ...loggedInUser };
+          newUserInfo.error = "";
+          newUserInfo.success = true;
+          setLoggedInUser(newUserInfo);
+          history.replace(from);
+        })
+        .catch((error) => {
+          const newUserInfo = { ...loggedInUser };
+          error.message = "Credentials Doesn't Match..!";
+          newUserInfo.error = error.message;
+          newUserInfo.success = false;
+          setLoggedInUser(newUserInfo);
+          console.log(newUserInfo.error);
+        });
+    }
+    if (newUser && user.name && user.email && user.password) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password)
@@ -71,26 +96,7 @@ const Login = () => {
           newUserInfo.error = error.message;
           newUserInfo.success = false;
           setUser(newUserInfo);
-        });
-    }
-    if (!newUser && user.email && user.password) {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then((res) => {
-          const newUserInfo = { ...user };
-          newUserInfo.error = "";
-          newUserInfo.success = true;
-          setLoggedInUser(newUserInfo);
-          history.replace(from);
-        })
-        .catch((error) => {
-          const newUserInfo = { ...user };
-          error.message = "Credentials Doesn't Match..!";
-          newUserInfo.error = error.message;
-          newUserInfo.success = false;
-          setLoggedInUser(newUserInfo);
-          console.log(newUserInfo.error);
+          console.log(user.error);
         });
     }
 
@@ -172,7 +178,7 @@ const Login = () => {
                 fontWeight: "600",
               }}
             >
-              {loggedInUser.error}
+              {newUser ? user.error : loggedInUser.error}
             </small>
             <button type='submit' className='booking-button'>
               {newUser ? "Create Account" : "Log In"}
@@ -184,6 +190,7 @@ const Login = () => {
               {newUser
                 ? "Already Have an Account ?"
                 : "Don't have an Account ?"}
+              &#160;&#160;
               <button
                 onClick={() => {
                   setNewUser(!newUser);
