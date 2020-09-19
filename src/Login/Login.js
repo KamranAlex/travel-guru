@@ -38,8 +38,7 @@ const Login = () => {
         history.replace(from);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        console.log(error.message);
       });
   };
   const handleBlur = (e) => {
@@ -58,28 +57,8 @@ const Login = () => {
       setUser(newUserInfo);
     }
   };
-  const handleFormLogin = (e) => {
-    if (!newUser && user.email && user.password) {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then((res) => {
-          const newUserInfo = { ...loggedInUser };
-          newUserInfo.error = "";
-          newUserInfo.success = true;
-          setLoggedInUser(newUserInfo);
-          history.replace(from);
-        })
-        .catch((error) => {
-          const newUserInfo = { ...loggedInUser };
-          error.message = "Credentials Doesn't Match..!";
-          newUserInfo.error = error.message;
-          newUserInfo.success = false;
-          setLoggedInUser(newUserInfo);
-          console.log(newUserInfo.error);
-        });
-    }
-    if (newUser && user.name && user.email && user.password) {
+  const handleFormSubmit = (e) => {
+    if (newUser === true && user.name && user.email && user.password) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password)
@@ -97,6 +76,26 @@ const Login = () => {
           newUserInfo.success = false;
           setUser(newUserInfo);
           console.log(user.error);
+        });
+    }
+    if (newUser === false && user.email && user.password) {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          const newUserInfo = { ...loggedInUser };
+          newUserInfo.error = "";
+          newUserInfo.success = true;
+          setLoggedInUser(newUserInfo);
+          history.replace(from);
+        })
+        .catch((error) => {
+          const newUserInfo = { ...loggedInUser };
+          error.message = "Credentials Doesn't Match..!";
+          newUserInfo.error = error.message;
+          newUserInfo.success = false;
+          setLoggedInUser(newUserInfo);
+          console.log(newUserInfo.error);
         });
     }
 
@@ -126,7 +125,7 @@ const Login = () => {
           <h3 className='text-center'>
             {newUser ? "Create Account " : "Log In"}
           </h3>
-          <form action='' onSubmit={handleFormLogin}>
+          <form action='' onSubmit={handleFormSubmit}>
             {newUser && (
               <div className='form-group'>
                 <label for='name'>Name</label>
