@@ -63,3 +63,15 @@ h6 span {
   outline: none;
   box-shadow: 0 0 3pt 2pt #3b5998;
 }
+.toggle-button {
+  border: 0;
+  padding: 0;
+  background: none;
+}
+.toggle-button:hover {
+  border-bottom: 1px solid gray;
+}
+.toggle-button:active,
+.toggle-button:focus {
+  outline: none;
+}

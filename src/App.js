@@ -5,7 +5,6 @@ import Booking from "./Booking/Booking";
 import Error from "./Error/Error";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
-import SignUp from "./Login/SignUp";
 import Map from "./Map/Map";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
@@ -40,10 +39,6 @@ function App() {
 
             <Route path='/login'>
               <Login></Login>
-            </Route>
-
-            <Route path='/signUp'>
-              <SignUp></SignUp>
             </Route>
 
             <PrivateRoute path='/map'>

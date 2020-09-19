@@ -11,6 +11,7 @@ import { UserContext } from "../App";
 
 const Login = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [newUser, setNewUser] = useState(false);
   const [user, setUser] = useState({});
   const history = useHistory();
   const location = useLocation();
@@ -53,7 +54,26 @@ const Login = () => {
     }
   };
   const handleFormLogin = (e) => {
-    if (user.email && user.password) {
+    if (newUser && user.email && user.password) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(user.email, user.password)
+        .then((res) => {
+          const newUserInfo = { ...user };
+          newUserInfo.error = "";
+          newUserInfo.success = true;
+          setUser(newUserInfo);
+          updateUserName(user.name);
+          history.replace(from);
+        })
+        .catch((error) => {
+          const newUserInfo = { ...user };
+          newUserInfo.error = error.message;
+          newUserInfo.success = false;
+          setUser(newUserInfo);
+        });
+    }
+    if (!newUser && user.email && user.password) {
       firebase
         .auth()
         .signInWithEmailAndPassword(user.email, user.password)
@@ -76,13 +96,43 @@ const Login = () => {
 
     e.preventDefault();
   };
+
+  const updateUserName = (name) => {
+    const user = firebase.auth().currentUser;
+
+    user
+      .updateProfile({
+        displayName: name,
+        photoURL: "https://example.com/jane-q-user/profile.jpg",
+      })
+      .then(() => {
+        console.log("Name Updated");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div>
       <HeaderDark></HeaderDark>
       <div className='container login'>
         <div className='login-form'>
-          <h3 className='text-center'>Login</h3>
+          <h3 className='text-center'>
+            {newUser ? "Create Account " : "Log In"}
+          </h3>
           <form action='' onSubmit={handleFormLogin}>
+            {newUser && (
+              <div className='form-group'>
+                <label for='name'>Name</label>
+                <input
+                  onBlur={handleBlur}
+                  className='form-control'
+                  type='text'
+                  name='name'
+                  required
+                />
+              </div>
+            )}
             <div className='form-group'>
               <label for='Email'>Email</label>
               <input
@@ -104,6 +154,18 @@ const Login = () => {
                 required
               />
             </div>
+            {newUser && (
+              <div className='form-group'>
+                <label for='confirm-Password'>Password</label>
+                <input
+                  onBlur={handleBlur}
+                  className='form-control'
+                  type='password'
+                  name='confirm-password'
+                  required
+                />
+              </div>
+            )}
             <small
               style={{
                 color: "red",
@@ -113,16 +175,26 @@ const Login = () => {
               {loggedInUser.error}
             </small>
             <button type='submit' className='booking-button'>
-              Log in
+              {newUser ? "Create Account" : "Log In"}
             </button>
           </form>
 
           <div className='toggle-login'>
             <small>
-              Don't have an account?
-              <Link to='/signUp'>
-                <span className='text-warning'> Create an Account</span>
-              </Link>
+              {newUser
+                ? "Already Have an Account ?"
+                : "Don't have an Account ?"}
+              <button
+                onClick={() => {
+                  setNewUser(!newUser);
+                }}
+                className='toggle-button'
+              >
+                <span className='text-warning'>
+                  {" "}
+                  {newUser ? "Log In " : "Create an Account "}
+                </span>
+              </button>
             </small>
           </div>
         </div>
