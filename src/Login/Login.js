@@ -43,6 +43,9 @@ const Login = () => {
   };
   const handleBlur = (e) => {
     let isFieldValid = true;
+    if (e.target.name === "name") {
+      isFieldValid = e.target.value.length > 0;
+    }
     if (e.target.name === "email") {
       isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
     }
@@ -67,7 +70,8 @@ const Login = () => {
           newUserInfo.error = "";
           newUserInfo.success = true;
           setUser(newUserInfo);
-          updateUserName(user.name);
+          setLoggedInUser(user);
+          updateUserName(loggedInUser.name);
           history.replace(from);
         })
         .catch((error) => {
@@ -83,14 +87,14 @@ const Login = () => {
         .auth()
         .signInWithEmailAndPassword(user.email, user.password)
         .then((res) => {
-          const newUserInfo = { ...loggedInUser };
+          const newUserInfo = { ...user };
           newUserInfo.error = "";
           newUserInfo.success = true;
           setLoggedInUser(newUserInfo);
           history.replace(from);
         })
         .catch((error) => {
-          const newUserInfo = { ...loggedInUser };
+          const newUserInfo = { ...user };
           error.message = "Credentials Doesn't Match..!";
           newUserInfo.error = error.message;
           newUserInfo.success = false;
