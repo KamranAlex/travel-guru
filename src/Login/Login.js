@@ -32,7 +32,8 @@ const Login = () => {
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig);
   }
-  // Google Sign In...
+
+  // Google Sign In......
   const handleGoogleSignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -41,6 +42,7 @@ const Login = () => {
       .then((result) => {
         const { displayName, email } = result.user;
         const signedInUser = { name: displayName, email };
+        signedInUser.isSignedIn = true;
         setLoggedInUser(signedInUser);
         history.replace(from);
       })
@@ -48,6 +50,21 @@ const Login = () => {
         console.log(error.message);
       });
   };
+
+  //FaceBook Login......
+  const handleFBLogin = () => {
+    const fbProvider = new firebase.auth.FacebookAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(fbProvider)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch(function (error) {
+        console.log(error.message);
+      });
+  };
+
   // Get input value, Validate & set to State....
   const handleBlur = (e) => {
     let isFieldValid = true;
@@ -279,7 +296,10 @@ const Login = () => {
             <p> Continue With Google</p>
           </div>
         </button>
-        <button className='fb-login d-flex justify-content-between '>
+        <button
+          onClick={handleFBLogin}
+          className='fb-login d-flex justify-content-between '
+        >
           <div className='social-icon '>
             <FontAwesomeIcon
               size='lg'
