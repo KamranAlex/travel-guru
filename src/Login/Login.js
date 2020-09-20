@@ -58,7 +58,11 @@ const Login = () => {
       .auth()
       .signInWithPopup(fbProvider)
       .then((result) => {
-        console.log(result);
+        const { displayName, email } = result.user;
+        const fbSignedUser = { name: displayName, email };
+        fbSignedUser.isSignedIn = true;
+        setLoggedInUser(fbSignedUser);
+        history.replace(from);
       })
       .catch(function (error) {
         console.log(error.message);
