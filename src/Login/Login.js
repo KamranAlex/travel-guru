@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import React, { useContext, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import "./Login.css";
 import HeaderDark from "../Header/HeaderDark";
 import * as firebase from "firebase/app";
@@ -20,7 +20,6 @@ const Login = () => {
     confirmPassword: "",
   });
   const [formERR, setFormERR] = useState({
-    fieldError: true,
     nameERR: "",
     emailERR: "",
     passwordERR: "",
@@ -90,16 +89,22 @@ const Login = () => {
       }
     }
     if (isFieldValid) {
+      setFormERR({});
       const newUserInfo = { ...user };
       newUserInfo[e.target.name] = e.target.value;
       setUser(newUserInfo);
     }
   };
-  console.log(user);
 
   // Handle form submittion [Create User & sign in]....
   const handleFormSubmit = (e) => {
-    if (newUser === true && user.name && user.email && user.password) {
+    if (
+      newUser === true &&
+      user.name &&
+      user.email &&
+      user.password &&
+      user.confirmPassword
+    ) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(user.email, user.password)
@@ -108,6 +113,8 @@ const Login = () => {
           newUserInfo.error = "";
           newUserInfo.success = true;
           setUser(newUserInfo);
+          newUserInfo.isSignedIn = true;
+          setLoggedInUser(newUserInfo);
           updateUserName(user.name);
           history.replace(from);
         })
@@ -127,22 +134,23 @@ const Login = () => {
           const newUserInfo = { ...user };
           newUserInfo.error = "";
           newUserInfo.success = true;
+          newUserInfo.isSignedIn = true;
           setLoggedInUser(newUserInfo);
           history.replace(from);
-          console.log(res);
         })
         .catch((error) => {
           const newUserInfo = { ...user };
           error.message = "Credentials Doesn't Match..!";
           newUserInfo.error = error.message;
           newUserInfo.success = false;
+          newUserInfo.isSignedIn = false;
           setLoggedInUser(newUserInfo);
           console.log(error);
         });
     }
     e.preventDefault();
   };
-
+  //Update UserName...
   const updateUserName = (name) => {
     const user = firebase.auth().currentUser;
 

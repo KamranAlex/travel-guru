@@ -39,7 +39,7 @@ const HeaderDark = () => {
             <Link className='nav-link ' to='/'>
               Contact
             </Link>
-            {loggedInUser.email ? (
+            {loggedInUser.isSignedIn ? (
               <div>
                 <button
                   onClick={() => setLoggedInUser({})}
