@@ -44,11 +44,18 @@ const Header = () => {
                 <button
                   onClick={() => setLoggedInUser({})}
                   className='login-btn'
-                  style={{ background: "#00b82b" }}
+                  style={{
+                    background: "#C8034A",
+                    color: "white",
+                    fontWeight: 500,
+                  }}
                 >
                   Logout
                 </button>
-                <small style={{ color: "yellow" }}> {loggedInUser.name}</small>
+                <small style={{ color: "yellow" }}>
+                  {" "}
+                  &#160;{loggedInUser.name}
+                </small>
               </div>
             ) : (
               <Link to='/login'>
