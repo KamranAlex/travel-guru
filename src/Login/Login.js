@@ -17,6 +17,14 @@ const Login = () => {
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
+  });
+  const [formERR, setFormERR] = useState({
+    fieldError: true,
+    nameERR: "",
+    emailERR: "",
+    passwordERR: "",
+    confirmPassERR: "",
   });
   const history = useHistory();
   const location = useLocation();
@@ -25,7 +33,7 @@ const Login = () => {
   if (firebase.apps.length === 0) {
     firebase.initializeApp(firebaseConfig);
   }
-
+  // Google Sign In...
   const handleGoogleSignIn = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase
@@ -41,18 +49,45 @@ const Login = () => {
         console.log(error.message);
       });
   };
+  // Get input value, Validate & set to State....
   const handleBlur = (e) => {
     let isFieldValid = true;
     if (e.target.name === "name") {
-      isFieldValid = e.target.value.length > 0;
+      if (e.target.value) {
+        isFieldValid = true;
+      } else {
+        isFieldValid = false;
+        setFormERR({ nameERR: "Name Required !!!" });
+      }
     }
     if (e.target.name === "email") {
-      isFieldValid = /\S+@\S+\.\S+/.test(e.target.value);
+      if (/\S+@\S+\.\S+/.test(e.target.value)) {
+        isFieldValid = true;
+      } else {
+        isFieldValid = false;
+        setFormERR({ emailERR: "Invalid Email !!! try..(example@email.com)" });
+      }
     }
     if (e.target.name === "password") {
-      const isPasswordValid = e.target.value.length > 6;
-      const passwordHasNumber = /\d{1}/.test(e.target.value);
-      isFieldValid = isPasswordValid && passwordHasNumber;
+      if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(e.target.value)) {
+        isFieldValid = true;
+      } else {
+        isFieldValid = false;
+        setFormERR({
+          passwordERR:
+            "Password must be 6 characters or more, including at least 1 number and 1 digit !!!",
+        });
+      }
+    }
+    if (e.target.name === "confirmPassword") {
+      if (e.target.value === user.password) {
+        isFieldValid = true;
+      } else {
+        isFieldValid = false;
+        setFormERR({
+          confirmPassERR: "Password Doesn't MATCH !!!",
+        });
+      }
     }
     if (isFieldValid) {
       const newUserInfo = { ...user };
@@ -60,6 +95,9 @@ const Login = () => {
       setUser(newUserInfo);
     }
   };
+  console.log(user);
+
+  // Handle form submittion [Create User & sign in]....
   const handleFormSubmit = (e) => {
     if (newUser === true && user.name && user.email && user.password) {
       firebase
@@ -70,8 +108,7 @@ const Login = () => {
           newUserInfo.error = "";
           newUserInfo.success = true;
           setUser(newUserInfo);
-          setLoggedInUser(user);
-          updateUserName(loggedInUser.name);
+          updateUserName(user.name);
           history.replace(from);
         })
         .catch((error) => {
@@ -79,7 +116,7 @@ const Login = () => {
           newUserInfo.error = error.message;
           newUserInfo.success = false;
           setUser(newUserInfo);
-          console.log(user.error);
+          console.log(error);
         });
     }
     if (newUser === false && user.email && user.password) {
@@ -92,6 +129,7 @@ const Login = () => {
           newUserInfo.success = true;
           setLoggedInUser(newUserInfo);
           history.replace(from);
+          console.log(res);
         })
         .catch((error) => {
           const newUserInfo = { ...user };
@@ -99,10 +137,9 @@ const Login = () => {
           newUserInfo.error = error.message;
           newUserInfo.success = false;
           setLoggedInUser(newUserInfo);
-          console.log(newUserInfo.error);
+          console.log(error);
         });
     }
-
     e.preventDefault();
   };
 
@@ -140,6 +177,7 @@ const Login = () => {
                   name='name'
                   required
                 />
+                <p className='form-errors'>{formERR.nameERR}</p>
               </div>
             )}
             <div className='form-group'>
@@ -152,6 +190,7 @@ const Login = () => {
                 id=''
                 required
               />
+              <p className='form-errors'>{formERR.emailERR}</p>
             </div>
             <div className='form-group'>
               <label for='Password'>Password</label>
@@ -162,17 +201,19 @@ const Login = () => {
                 name='password'
                 required
               />
+              <p className='form-errors'>{formERR.passwordERR}</p>
             </div>
             {newUser && (
               <div className='form-group'>
-                <label for='confirm-Password'>Password</label>
+                <label for='confirm-Password'>Confirm Password</label>
                 <input
                   onBlur={handleBlur}
                   className='form-control'
                   type='password'
-                  name='confirm-password'
+                  name='confirmPassword'
                   required
                 />
+                <p className='form-errors'>{formERR.confirmPassERR}</p>
               </div>
             )}
             <small

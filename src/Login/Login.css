@@ -75,3 +75,10 @@ h6 span {
 .toggle-button:focus {
   outline: none;
 }
+.form-errors {
+  color: red;
+  font-weight: 500;
+  font-size: 13px;
+  font-family: inherit;
+  font-style: italic;
+}
