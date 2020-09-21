@@ -19,8 +19,8 @@ var fakeData = [
     photo:
       "https://images.unsplash.com/photo-1567601916666-581e8d89288b?ixlib=rb-1.2.1&w=1000&q=80",
     coords: {
-      lat: 21.8359,
-      lng: 88.8842,
+      lat: 21.9497,
+      lng: 89.1833,
     },
   },
   {

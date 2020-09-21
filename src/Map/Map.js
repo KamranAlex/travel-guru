@@ -9,6 +9,7 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow,
 } from "react-google-maps";
 import fakeData from "../FakeData/Fakedata";
 
@@ -24,7 +25,11 @@ const Map = () => {
       <GoogleMap defaultZoom={7} defaultCenter={{ lat: 23.8103, lng: 90.4125 }}>
         {locationInfo.map((area) => {
           return (
-            <Marker position={{ lat: area.coords.lat, lng: area.coords.lng }} />
+            <Marker position={{ lat: area.coords.lat, lng: area.coords.lng }}>
+              <InfoWindow>
+                <p>{area.name}</p>
+              </InfoWindow>
+            </Marker>
           );
         })}
       </GoogleMap>
