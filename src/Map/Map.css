@@ -1,0 +1,64 @@
+.googleMap {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.map-intro {
+  color: #d81233;
+}
+.hotels {
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+.hotel-intro span {
+  position: relative;
+  padding-bottom: 5px;
+  color: #0988af;
+  font-family: inherit;
+}
+.hotel-intro span::after {
+  position: absolute;
+  margin-bottom: 5px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  border-bottom: 3px dotted #0988af;
+  content: "";
+}
+.hotel-card {
+  width: 340px;
+  height: auto;
+  box-shadow: 10px 5px 5px gray;
+}
+.hotel-card:hover {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  cursor: auto;
+}
+.card .hotel-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+.hotel-body {
+  height: 200px;
+}
+.hotel-title {
+  font-size: 22px;
+  color: teal;
+  font-weight: 700;
+}
+.hotel-info {
+  font-size: 15px;
+  color: black;
+  margin: 8px 0px;
+}
+.hotel-price {
+  font-size: 17px;
+  font-weight: 500;
+  color: #f9a51a;
+}
+.hotel-price small {
+  color: rgb(209, 18, 18);
+}

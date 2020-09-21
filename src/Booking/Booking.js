@@ -71,7 +71,7 @@ const Booking = () => {
                       </div>
                     </div>
                   </div>
-                  <Link to='/map'>
+                  <Link to={`/map/${psInfo.id}`}>
                     <button type='submit' className='booking-button'>
                       Book Now&#160;&#160;&#160;
                       <FontAwesomeIcon icon={faCalendarCheck} />
