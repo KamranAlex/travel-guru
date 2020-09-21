@@ -13,7 +13,7 @@ var fakeData = [
   },
   {
     id: 2,
-    name: "SundorBan",
+    name: "SundarBan",
     desc:
       "The Sundarbans is a cluster of low-lying islands in the Bay of Bengal, spread across India and Bangladesh, famous for its unique mangrove forests. ... WWF-India's vision for this landscape is to develop a climate resilient Sundarbans that supports biodiversity, ecosystems services and sustainable development",
     photo:
@@ -25,7 +25,7 @@ var fakeData = [
   },
   {
     id: 3,
-    name: "Srimangal",
+    name: "Sreemangal",
     desc:
       "It is famous for tea garden. ... Only one tea research institute in Bangladesh which name is BTRI (Bangladesh Tea Research Institute) is situated in Sreemangal. The terraced tea gardens, plantations and evergreen hills of sreemangal are wonderful treats for the tourists.",
     photo:
