@@ -14,19 +14,14 @@ import fakeData from "../FakeData/Fakedata";
 
 const Map = () => {
   const { id } = useParams();
-  console.log(id);
+
   const locationInfo = fakeData.filter((locInfo) => {
     return locInfo.id === parseInt(id);
-  });
-  console.log(locationInfo);
-
-  locationInfo.map((area) => {
-    console.log(area.coords.lat);
   });
 
   const MapWithAMarker = withScriptjs(
     withGoogleMap((props) => (
-      <GoogleMap defaultZoom={7} defaultCenter={{ lat: 23.685, lng: 90.3563 }}>
+      <GoogleMap defaultZoom={7} defaultCenter={{ lat: 23.8103, lng: 90.4125 }}>
         {locationInfo.map((area) => {
           return (
             <Marker position={{ lat: area.coords.lat, lng: area.coords.lng }} />
@@ -38,9 +33,9 @@ const Map = () => {
   return (
     <div>
       <HeaderDark></HeaderDark>
-      {locationInfo.map((area) => {
+      {locationInfo.map((place) => {
         return (
-          <h1 className='text-center map-intro'>Welcome to, {area.name}</h1>
+          <h1 className='text-center map-intro'>Welcome to, {place.name}</h1>
         );
       })}
       <div className='container googleMap'>
@@ -55,10 +50,10 @@ const Map = () => {
       {/* Hotels part- Static  */}
 
       <div className='container hotels '>
-        {locationInfo.map((area) => {
+        {locationInfo.map((hotel) => {
           return (
             <h2 className='text-center hotel-intro'>
-              <span>Hotel's in {area.name}</span>
+              <span>Hotel's in {hotel.name}</span>
             </h2>
           );
         })}
