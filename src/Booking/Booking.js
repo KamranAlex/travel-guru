@@ -1,17 +1,22 @@
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import fakeData from "../FakeData/Fakedata";
 import Header from "../Header/Header";
 import "./Booking.css";
 
 const Booking = () => {
   const { id } = useParams();
+  const history = useHistory();
 
   const passedInfo = fakeData.filter((flInfo) => {
     return flInfo.id === parseInt(id);
   });
+
+  const handleBookingForm = (id) => {
+    history.push(`/map/${id}`);
+  };
 
   return (
     <div className='container-fluid home'>
@@ -27,7 +32,12 @@ const Booking = () => {
             </div>
             <div className='col-md-6'>
               <div className='booking-form'>
-                <form action=''>
+                <form
+                  action=''
+                  onSubmit={() => {
+                    handleBookingForm(psInfo.id);
+                  }}
+                >
                   <div className='form-group'>
                     <label for='Origin'>Origin</label>
                     <input
@@ -35,6 +45,7 @@ const Booking = () => {
                       type='text'
                       name='origin'
                       id=''
+                      required
                     />
                   </div>
                   <div className='form-group'>
@@ -45,6 +56,7 @@ const Booking = () => {
                       name='Destination'
                       id=''
                       value={psInfo.name}
+                      required
                     />
                   </div>
                   <div className='row'>
@@ -56,6 +68,7 @@ const Booking = () => {
                           type='date'
                           name='fromDate'
                           id=''
+                          required
                         />
                       </div>
                     </div>
@@ -67,16 +80,15 @@ const Booking = () => {
                           type='date'
                           name='ToDate'
                           id=''
+                          required
                         />
                       </div>
                     </div>
                   </div>
-                  <Link to={`/map/${psInfo.id}`}>
-                    <button type='submit' className='booking-button'>
-                      Book Now&#160;&#160;&#160;
-                      <FontAwesomeIcon icon={faCalendarCheck} />
-                    </button>
-                  </Link>
+                  <button type='submit' className='booking-button'>
+                    Book Now&#160;&#160;&#160;
+                    <FontAwesomeIcon icon={faCalendarCheck} />
+                  </button>
                 </form>
               </div>
             </div>

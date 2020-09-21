@@ -41,12 +41,9 @@ function App() {
               <Login></Login>
             </Route>
 
-            <Route path='/map/:id'>
+            <PrivateRoute path='/map/:id'>
               <Map></Map>
-            </Route>
-            {/* <PrivateRoute path='/map'>
-              <Map></Map>
-            </PrivateRoute> */}
+            </PrivateRoute>
 
             <Route path='*'>
               <Error></Error>
