@@ -29,6 +29,7 @@
 .hotel-card {
   width: 340px;
   height: auto;
+  border-radius: 10px !important;
   box-shadow: 10px 5px 5px gray;
 }
 .hotel-card:hover {

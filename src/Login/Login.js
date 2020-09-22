@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import fbICON from "../images/Icon/fb.png";
+import googleICON from "../images/Icon/google.png";
 import React, { useContext, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import "./Login.css";
@@ -290,11 +290,7 @@ const Login = () => {
           className='google-login d-flex justify-content-between '
         >
           <div className='social-icon '>
-            <FontAwesomeIcon
-              size='lg'
-              style={{ color: "#dc3545" }}
-              icon={faGoogle}
-            />
+            <img src={googleICON} alt='' />
           </div>
           <div className='social-text '>
             <p> Continue With Google</p>
@@ -305,11 +301,7 @@ const Login = () => {
           className='fb-login d-flex justify-content-between '
         >
           <div className='social-icon '>
-            <FontAwesomeIcon
-              size='lg'
-              style={{ color: "#3b5998" }}
-              icon={faFacebook}
-            />
+            <img src={fbICON} alt='' />
           </div>
           <div className='social-text '>
             <p> Continue With Facebook</p>

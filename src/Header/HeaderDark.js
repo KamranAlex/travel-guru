@@ -30,13 +30,13 @@ const HeaderDark = () => {
             <Link to='/home' className='nav-link active'>
               Home <span className='sr-only'>(current)</span>
             </Link>
-            <Link className='nav-link' to='/'>
+            <Link className='nav-link' to='*'>
               Blog
             </Link>
-            <Link className='nav-link' to='/'>
+            <Link className='nav-link' to='*'>
               Destination
             </Link>
-            <Link className='nav-link ' to='/'>
+            <Link className='nav-link ' to='*'>
               Contact
             </Link>
             {loggedInUser.isSignedIn ? (

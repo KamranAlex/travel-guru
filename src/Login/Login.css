@@ -37,8 +37,13 @@ h6 span {
 }
 
 .social-icon {
-  padding-left: 20px;
+  padding: 0px 20px;
+  margin-right: 10px;
 }
+.social-icon img {
+  height: 30px;
+}
+
 .social-text {
   padding-right: 30px;
 }
@@ -50,19 +55,24 @@ h6 span {
 .google-login,
 .fb-login {
   border: 1px solid gray;
-  border-radius: 20px;
+  border-radius: 30px;
   width: 30%;
   margin: 20px auto;
   padding: 10px 10px 10px 10px;
 }
-.google-login:focus {
+.google-login:hover {
   outline: none;
   box-shadow: 0 0 3pt 2pt #dc3545;
 }
-.fb-login:focus {
+.fb-login:hover {
   outline: none;
   box-shadow: 0 0 3pt 2pt #3b5998;
 }
+.google-login:focus,
+.fb-login:focus {
+  outline: none;
+}
+
 .toggle-button {
   border: 0;
   padding: 0;

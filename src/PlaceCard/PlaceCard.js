@@ -8,7 +8,10 @@ const PlaceCard = (props) => {
   return (
     <div className='col-md-4'>
       <Link to={`/booking/${id}`}>
-        <div className='card' onMouseOver={() => props.handleCardHover(id)}>
+        <div
+          className='card place-card'
+          onMouseOver={() => props.handleCardHover(id)}
+        >
           <img src={photo} alt='' />
           <div className='card-text'>
             <h2>{name}</h2>
