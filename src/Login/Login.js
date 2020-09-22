@@ -95,7 +95,7 @@ const Login = () => {
         isFieldValid = false;
         setFormERR({
           passwordERR:
-            "Password must be 6 characters or more, including at least 1 number and 1 digit !!!",
+            "Password must be 6 characters or more, including at least 1 Letter and 1 Digit !!!",
         });
       }
     }
